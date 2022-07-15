@@ -1,23 +1,104 @@
-function openModal(mn) {
-    let modal = document.getElementById(mn);
-    if (typeof modal == 'undefined' || modal === null)
+
+let modal = document.getElementById('cadastrados-modal');
+let nome = document.getElementById('txtNome')
+let nameValidation = document.getElementById('name-validation')
+let email = document.getElementById('txtEmail')
+let mailValidation = document.getElementById('mail-validation')
+
+
+function openModal(id){
+
+    if (verificarModal())
         return;
-    modal.style.display = 'block';
+
+    document.getElementById(id).style.display = 'block'
     document.body.style.overflow = 'hidden';
     mailValidation.innerText = '';
+
 }
-function closeModal(mn) {
-    let modal = document.getElementById(mn);
+
+function openModalConfirmacao(){
+
+    if (verificarModal())
+    return;
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  mailValidation.innerText = '';
+  
+}
+
+function verificarModal(){
     if (typeof modal == 'undefined' || modal === null)
-        return;
-    modal.style.display = 'none';
+        return true;
 }
+
+function closeModal(id){
+
+    if (verificarModal()){
+        return;
+    }
+
+    document.getElementById(id).style.display = 'none'
+
+}
+
+
+function validarNome(){
+
+  if (nome.value.length < 3) {
+      nameValidation.innerText = 'Por favor, preencha o campo nome';
+      nome.style.border = '';
+  }
+  else {
+    nameValidation.innerText = '';
+  }
+
+}
+
+function validarEmail(){
+  
+    const regexmail = /\S+@\S+\.\S+/;
+
+    if (regexmail.test(email.value)) {
+        mailValidation.innerText = 'Seu email é válido';
+        mailValidation.style.color = 'lime';
+    }
+    else {
+        mailValidation.innerText = 'Seu email não é válido';
+        mailValidation.style.color = 'red';
+    }
+
+}
+
+
+function verificarCamposVazios(){
+
+  let campoNome = document.querySelector('#txtNome').value
+  let campoEmail = document.querySelector('#txtEmail').value
+  
+
+  if (campoEmail == '' || campoNome == '') {
+    alert('Preencha os campos')
+    return true;
+  }
+
+  return false;
+
+}
+
+
+function obterUsuarios(){
+    return JSON.parse(localStorage.getItem('usuarios'))
+}
+
+
 let operacao = 'A';
 let usuarios;
 let resultSorteio = [];
 
 if (localStorage.getItem('usuarios')) {
-    usuarios = JSON.parse(localStorage.getItem('usuarios'))
+    usuarios = obterUsuarios()
 }
 else {
     usuarios = [];
@@ -51,8 +132,9 @@ function Adicionar() {
         nome: document.querySelector('#txtNome').value,
         email: document.querySelector('#txtEmail').value
     }
-    if (document.querySelector('#txtEmail').value == '' || document.querySelector('#txtNome').value == '') {
-        alert('Preencha os campos')
+    
+    if(verificarCamposVazios()){
+      return;
     }
     else {
         usuarios.push(usuario);
@@ -62,28 +144,33 @@ function Adicionar() {
         return true;
     }
 }
+
+
 function cleantext() {
     document.querySelector("#txtNome").value = '';
     document.querySelector("#txtEmail").value = '';
 }
 
 function handleEditar(e) {
+
     operacao = "E";
     indice_selecionado = parseInt(e.getAttribute("alt"));
-    let users = JSON.parse(localStorage.getItem('usuarios'));
+    let users = obterUsuarios();
     let user = users[indice_selecionado];
 
     document.querySelector("#txtNome").value = user.nome;
     document.querySelector("#txtEmail").value = user.email;
-    let modal = document.getElementById('cadastrados-modal');
-    if (typeof modal == 'undefined' || modal === null)
+
+    if (verificarModal())
         return;
+
     modal.style.display = 'none';
 
 }
 
 function Editar() {
-    let users = JSON.parse(localStorage.getItem('usuarios'));
+
+    let users = obterUsuarios()
 
     const userAtualizado = {
         nome: document.querySelector("#txtNome").value,
@@ -102,7 +189,7 @@ function Editar() {
 function listar() {
     let tbody = document.querySelector('#tblListar tbody');
     let linhas = '';
-    let users = JSON.parse(localStorage.getItem('usuarios'));
+    let users = obterUsuarios()
 
     for (let i in users) {
         let user = users[i];
@@ -139,7 +226,7 @@ function handleDeletar(e) {
 }
 
 function sorteio() {
-    usuarios = JSON.parse(localStorage.getItem('usuarios'))
+    usuarios = obterUsuarios()
     let max = usuarios.length
     let sbody = document.querySelector('.modal-body-resultado');
     let slinhas = '';
@@ -189,31 +276,4 @@ function reset() {
     tbody.innerHTML = ``;
     usuarios = [];
 }
-var mailValidation = document.getElementById('mail-validation');
-let nome = document.getElementById('txtNome');
-let nameValidation = document.getElementById('name-validation');
-nome.onkeyup = function () {
-    var nameVal = true;
-    if (nome.value.length < 3) {
-        nameValidation.innerText = 'Por favor, preencha o campo nome';
-        nome.style.border = '';
-    }
-    else {
-        nameValidation.innerText = '';
-        nameVal = false;
-    }
-}
-let email = document.getElementById('txtEmail');
-email.onkeyup = function () {
-    const regexmail = /\S+@\S+\.\S+/;
-    if (regexmail.test(email.value)) {
-        mailValidation.innerText = 'Seu email é válido';
-        mailValidation.style.color = 'lime';
 
-    }
-    else {
-        mailValidation.innerText = 'Seu email não válido';
-        mailValidation.style.color = 'red';
-
-    }
-}

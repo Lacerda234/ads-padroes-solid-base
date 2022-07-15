@@ -20,10 +20,10 @@
     <div class="formulario">
         <form id="frmCadastro">
             <label for="fname">Nome</label><br>
-            <input type="text" id="txtNome" class="text-box" name="nome" placeholder="Insira seu Nome"><br>
+            <input type="text" id="txtNome" onkeyup="validarNome()" class="text-box" name="nome" placeholder="Insira seu Nome"><br>
             <span id="name-validation"></span>
             <label for="femail">E-mail</label><br>
-            <input type="email" id="txtEmail" class=" text-box" name="email" placeholder="Insira seu E-mail"><br>
+            <input type="email" id="txtEmail" onkeyup="validarEmail()" class=" text-box" name="email" placeholder="Insira seu E-mail"><br>
             <span id="mail-validation"></span>
             <input type="button" class="btn" value="Cadastrar" id="modal-cadastro"
                 onclick="add()">
@@ -39,7 +39,7 @@
         <div class="modal-content">
             
             <div class="modal-head">
-                <span class="close" id="closeModal" onclick="closeModal('cadastro-modal');cleantext()">&times;</span>
+                <span class="close" id="closeModal" onclick="closeModal('cadastro-modal'); cleantext()">&times;</span>
                 <h3 class="modal-title">AMIGO SECRETO LOOPIS</h3>
             </div>
 
@@ -48,7 +48,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn" onclick="closeModal('cadastro-modal');cleantext()">Retornar</button>
+                <button class="btn" onclick="closeModal('cadastro-modal'); cleantext()">Retornar</button>
             </div>
         </div>
     </div>
