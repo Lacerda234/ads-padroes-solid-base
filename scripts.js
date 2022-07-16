@@ -17,17 +17,6 @@ function openModal(id){
 
 }
 
-function openModalConfirmacao(){
-
-    if (verificarModal())
-    return;
-
-  modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  mailValidation.innerText = '';
-  
-}
-
 function verificarModal(){
     if (typeof modal == 'undefined' || modal === null)
         return true;
@@ -89,7 +78,14 @@ function verificarCamposVazios(){
 
 
 function obterUsuarios(){
-    return JSON.parse(localStorage.getItem('usuarios'))
+
+    if (localStorage.getItem('usuarios')) {
+        return JSON.parse(localStorage.getItem('usuarios'))
+    }
+    else {
+        usuarios = [];
+    }
+    
 }
 
 
@@ -97,12 +93,7 @@ let operacao = 'A';
 let usuarios;
 let resultSorteio = [];
 
-if (localStorage.getItem('usuarios')) {
-    usuarios = obterUsuarios()
-}
-else {
-    usuarios = [];
-}
+
 function numpar(e) {
     if (e % 2 == 0) {
 
@@ -213,6 +204,7 @@ document.querySelector('#modal-cadastrados').addEventListener('click', function 
 function deletar(indice) {
     usuarios.splice(indice, 1);
     if (usuarios.length == 0) {
+        operacao = 'A'
         localStorage.removeItem('usuarios');
         return;
     }
