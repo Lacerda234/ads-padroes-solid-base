@@ -104,9 +104,7 @@ function numpar(e) {
     }
 }
 
-function verificarSorteio() {
-    usuarios = obterUsuarios()
-    let max = usuarios.length
+function verificarSorteio(max) {
     if(max > 3 && max % 2 == 0) {
         return true;
     }
@@ -230,10 +228,12 @@ function handleDeletar(e) {
 }
 
 function sorteio() {
+    let usuarios = []
     usuarios = obterUsuarios()
+    let max = usuarios.length
     let sbody = document.querySelector('.modal-body-resultado');
     let slinhas = '';
-    if(verificarSorteio()){
+    if(verificarSorteio(max)){
         let resultado = [];
         let num = 0;
         for (let i = 0; i < usuarios.length; i++) {
@@ -256,7 +256,6 @@ function sorteio() {
         resultSorteio = [];
     }
     else{
-        alert("Não foi possível realizar o sorteio")
         return;
     }
 
