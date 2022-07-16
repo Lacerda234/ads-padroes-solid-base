@@ -104,6 +104,18 @@ function numpar(e) {
     }
 }
 
+function verificarSorteio() {
+    usuarios = obterUsuarios()
+    let max = usuarios.length
+    if(max > 3 && max % 2 == 0) {
+        return true;
+    }
+    else{
+        alert("O numero de candidatos deve ser par e ter pelo menos 4 pessoas")
+        return false;
+    }
+}
+
 let indice_selecionado = -1;
 const frmCadastro = document.getElementById('frmCadastro');
 
@@ -219,37 +231,35 @@ function handleDeletar(e) {
 
 function sorteio() {
     usuarios = obterUsuarios()
-    let max = usuarios.length
     let sbody = document.querySelector('.modal-body-resultado');
     let slinhas = '';
-    if (max <= 3) {
-        alert("É necessário adicionar pelo menos 4 pessoas")
-        return;
-    }
-    else if (max % 2 != 0) {
-        alert("O numero de candidatos deve ser par")
-        return;
-    }
-    let resultado = [];
-    let num = 0;
-    for (let i = 0; i < usuarios.length; i++) {
-        num = Math.floor((Math.random() * max) + 0);
-        if (resultado.includes(num)) {
-            i--;
-        }
-        else {
-            resultado.push(num);
+    if(verificarSorteio()){
+        let resultado = [];
+        let num = 0;
+        for (let i = 0; i < usuarios.length; i++) {
+            num = Math.floor((Math.random() * max) + 0);
+            if (resultado.includes(num)) {
+                i--;
+            }
+            else {
+                resultado.push(num);
 
+            }
         }
-    }
-    for (let i = 0; i < resultado.length; i++) {
-        if (numpar(i)) {
-            slinhas += `<p> ${resultSorteio[resultado[i]]} - ${resultSorteio[resultado[i + 1]]}`
+        for (let i = 0; i < resultado.length; i++) {
+            if (numpar(i)) {
+                slinhas += `<p> ${resultSorteio[resultado[i]]} - ${resultSorteio[resultado[i + 1]]}`
+            }
         }
+        sbody.innerHTML += slinhas;
+        openModal('resultado-modal')
+        resultSorteio = [];
     }
-    sbody.innerHTML += slinhas;
-    openModal('resultado-modal')
-    resultSorteio = [];
+    else{
+        alert("Não foi possível realizar o sorteio")
+        return;
+    }
+
 }
 
 document.querySelector('#btnSortear').addEventListener('click', function (e) {
