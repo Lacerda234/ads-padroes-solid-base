@@ -119,13 +119,21 @@ const frmCadastro = document.getElementById('frmCadastro');
 
 function add() {
     if (operacao == 'A') {
-        return Adicionar();
+        const result = Adicionar()
+        if(result){
+            openModal('cadastro-modal')
+        }else{
+            return
+        }
     }
     else {
-        return Editar();
-
+        const result = EdItar()
+        if(result){
+            alert("Usuário atualizado")
+        }else{
+            return
+        }
     }
-
 }
 
 function Adicionar() {
@@ -141,7 +149,6 @@ function Adicionar() {
         usuarios.push(usuario);
         resultSorteio.push(usuario.nome);
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
-        openModal('cadastro-modal')
         return true;
     }
 }
@@ -180,9 +187,9 @@ function Editar() {
 
     users[indice_selecionado] = userAtualizado;
     localStorage.setItem('usuarios', JSON.stringify(users));
-    alert('Usuario atualizado');
     operacao = 'A';
     closeModal('cadastrados-modal');
+    return true;
 
 }
 
